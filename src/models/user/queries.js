@@ -4,7 +4,7 @@ module.exports = {
    * GET ALL USERS
    */ 
     GET_ALL: 
-      `SELECT u.pk_user AS id, u.name, u.middle_name AS middleName, u.last_name AS lastName, u.email, u.address, ua.music, ua.cinema, ua.art 
+      `SELECT u.pk_user AS id, u.name, u.middle_name AS middleName, u.last_name AS lastName, u.email, u.phone, u.address, ua.music, ua.cinema, ua.art 
         FROM public.user u INNER JOIN public.user_additional ua ON u.pk_user=ua.fk_user`,
 
   /**

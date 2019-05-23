@@ -5,14 +5,13 @@ Users API test
 ## Getting Started
 
 Use: 
-
 ```
 yarn 
 or 
 npm install
 ```
 
-Ru with: 
+Run with: 
 ```
 yarn start 
 or 
