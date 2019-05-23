@@ -1,3 +1,17 @@
+-- Database: techtest
+
+-- DROP DATABASE techtest;
+
+CREATE DATABASE techtest
+    WITH 
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'English_United States.1252'
+    LC_CTYPE = 'English_United States.1252'
+    TABLESPACE = pg_default
+    CONNECTION LIMIT = -1;
+
+
 create domain address as VARCHAR(256);
 
 create domain email as VARCHAR(256);
@@ -16,25 +30,59 @@ create domain string_medium as VARCHAR(128);
 
 create domain string_short as VARCHAR(64);
 
-create table "user" (
-   pk_user              primary_key                 not null,
-   name                 name_short           null,
-   middle_name          name_short           null,
-   last_name            name_short           null,
-   email                email                null,
-   address              address              null,
-   constraint PK_USER primary key (pk_user)
-);
 
-create table user_additional (
-   pk_user_additional   primary_key                 not null,
-   pk_user              primary_key                 null,
-   music                string_medium        null,
-   cinema               string_medium        null,
-   art                  string_medium        null,
-   constraint PK_USER_ADDITIONAL primary key (pk_user_additional)
-);
+CREATE SEQUENCE public.pk_user_sequence
+    INCREMENT 1
+    START 9
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
 
-alter table user_additional
-   add constraint FK_USER_ADD_REFERENCE_USER foreign key (pk_user)
-      references "user" (pk_user);
+ALTER SEQUENCE public.pk_user_sequence
+    OWNER TO postgres;
+
+
+-- Table: public."user"
+
+-- DROP TABLE public."user";
+
+CREATE TABLE public."user"
+(
+    pk_user primary_key NOT NULL DEFAULT nextval('pk_user_sequence'::regclass),
+    name name_short COLLATE pg_catalog."default",
+    middle_name name_short COLLATE pg_catalog."default",
+    last_name name_short COLLATE pg_catalog."default",
+    email email COLLATE pg_catalog."default",
+    address address COLLATE pg_catalog."default",
+    CONSTRAINT pk_user PRIMARY KEY (pk_user)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public."user"
+    OWNER to postgres;
+
+-- Table: public.user_additional
+
+-- DROP TABLE public.user_additional;
+
+CREATE TABLE public.user_additional
+(
+    pk_user primary_key,
+    music string_medium COLLATE pg_catalog."default",
+    cinema string_medium COLLATE pg_catalog."default",
+    art string_medium COLLATE pg_catalog."default",
+    CONSTRAINT fk_user_add_reference_user FOREIGN KEY (pk_user)
+        REFERENCES public."user" (pk_user) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.user_additional
+    OWNER to postgres;
